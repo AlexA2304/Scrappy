@@ -1,12 +1,5 @@
 # Project Title: Scrappy Appy
 
-![image](https://github.com/jarrydallison/Colorfornia/assets/90670725/7d61de04-bcae-4a22-aaa1-7887437222d6)
-
-
-# Team: 2
-
-# Team Name: Colorfornia
-
 # Product Name: Scrappy
 
 # Team Members
