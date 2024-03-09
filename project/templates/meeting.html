@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/guide.css') }}">
+<style>
+
+#list {
+    border: 3px solid #1B1B1B;
+    font-family: sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #1B1B1B;
+}
+#voteBox {
+    border: 1px solid #1B1B1B;
+    background-color: lightgreen;
+    font-family: sans-serif;
+    font-size: 18px;
+    color: #1B1B1B;
+    padding: 10px;
+
+
+}
+/* NOT PART OF THE UNIVERSAL STYLES */
+#container {
+    display: flex;
+    flex-direction: column;
+}
+#userBox{
+    float: left;
+    font-family: 'Raleway', sans-serif;
+    background-color: #FFFFFF;
+    padding: 20px;
+    margin: 20px;
+    border: 4px solid #1B1B1B;
+    
+}
+.userBox{
+    float: left;
+    font-family: 'Raleway', sans-serif;
+    background-color: #FFFFFF;
+    padding: 20px;
+    margin: 20px;
+    border: 4px solid #1B1B1B;
+    
+}
+#storyInfo{
+    float: left;
+    font-family: 'Raleway', sans-serif;
+    background-color: #FFFFFF;
+    padding: 20px;
+    margin: 20px;
+    border: 4px solid #1B1B1B;
+    text-size-adjust: 80%;
+    
+}
+
+#bottomSection{
+    position:fixed;
+    bottom: 0;
+}
+
+#effort{
+    margin-bottom: 30px;
+    display: block;
+    font-size: 20;
+}
+</style>
+    <script type='text/javascript'>
+        const url = window.location.href;
+        const meetingId = url.substring(url.lastIndexOf("/") + 1);
+        console.log(meetingId)
+        //sets the current user's username to the variable userName
+        const userName = `{{ currentUser }}`;
+        const storyTitles = '{{ storyNameArray }}'
+        const storyAsA  = '{{ storyAsA }}'
+        const storyIWant  = '{{ storyIWant }}'
+        const storySoThat  = '{{ storySoThat }}'
+        const storyEffortArray  = '{{ storyEffortArray }}'
+        const titleArr = storyTitles.replace(/\[|\]|(&#39;)/g,'').split(",")
+        const asAArr = storyAsA.replace(/\[|\]|(&#39;)/g,'').split(",")
+        const iWantArr = storyIWant.replace(/\[|\]|(&#39;)/g,'').split(",")
+        const soThat = storySoThat.replace(/\[|\]|(&#39;)/g,'').split(",")
+        //sets our current Story Number to 1
+        var storyNumber = 1
+        var aggVote = 0
+        var userCount = 0
+        //Function to initialize the story counter in the Display Current Stories Div
+        async function initStoryCount(){
+            if(document.getElementById("storyNumby") === null){
+                var doNothing = 0
+            } else {
+                document.getElementById("storyNumby").innerHTML = "Story: " + storyNumber
+                console.log("Current Story: " + storyNumber)
+            }
+        }
+        //Function that adds the story number and determined vote number to a list of 
+        async function addStoryBox(){
+            var s1 = document.getElementById('inner');
+            s1.insertAdjacentHTML('afterend', `<tr><td>Story ${storyNumber}</td><td id="voteBox"><b style = "margin: 45%;">${aggVote}<b></td></tr>`)
+        }
+        //Function to get current voting table
+        async function fetchTable() {
+                try {
+                    const response = await fetch(`/vote/findAll`, {
+                        method: 'GET',
+                        credentials: 'same-origin'
+                    });
+                    const table = await response.json();
+                    return table;
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        //Function to update an existing vote
+        async function updateVote(voteNumber){
+            fetch(`/vote/update`, {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        body: JSON.stringify({
+                            storyID: storyNumber,
+                            username: userName,
+                            vote: voteNumber
+                        }),
+                        headers: {
+                            "Content-type": "application/json; charset=UTF-8"
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(json => console.log(json));
+        }
+        //Function to insert a new vote
+        async function voteFor(voteNumber) {
+            fetch(`/vote/insert`, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        storyID: storyNumber,
+                        username: userName,
+                        vote: voteNumber
+                    }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                })
+            .then(response => response.json())
+            .then(json => console.log(json))        
+        }
+        //Function to Vote  (insert a vote then update the vote)
+        async function votingZ(voteNumber) {
+            voteFor(voteNumber);
+            updateVote(voteNumber);
+            console.log("Vote Updated") 
+
+        }
+        //Renders initial information from the database
+        async function renderTable() {
+            var nameStr = `{{attendeesNames}}`;
+            console.log(nameStr)
+            const nameArr = nameStr.replace(/\[|\]/g,'').split(",")
+            var nameArrLen = nameArr.length;
+            userCount = nameArrLen
+            const table = await fetchTable();
+            const userNames = table.map(({username}) => username);
+            const Stories = table.map(({storyID}) => storyID)
+            console.log(table);
+            console.log(userNames);
+            for (var i = 0; i < nameArrLen; i++) {
+                nameArr[i] = nameArr[i].replace(/(&#39;)/g, "")
+                document.getElementById("test").innerHTML = nameArr.join('<br>');
+            }
+        }
+        //Checks to see if a given storyID has the equivalent vote values. 
+        async function checkStory(storyID){
+            await fetch(`vote/getVotes/${storyNumber}`, {
+                method: "GET",
+            })
+            .then((response) => response.json())
+            .then((votesByID) => console.log(votesByID));
+        }
+        //Function 
+        async function checkEq(storyID){
+            const table = await fetchTable();
+            console.log(Object.values(table).every(checkStory))
+        }
+        //Function that Shows Voting Buttons
+        async function showVoting() {
+            var x = document.getElementById("votingButtons");
+            x.style.display = "block";
+        }
+        //Function to hide the voting buttons
+        async function hideVoting() {
+            var x = document.getElementById("votingButtons");
+            x.style.display = "none";
+        }
+        //Function that increments the story number variable and updates the contents of the story box
+        async function nextStory() {
+            var statusBox = document.getElementById("status")
+            if(titleArr[storyNumber] === undefined) {
+                document.getElementById("storyInfo").innerHTML = "<h1>That's All Folks!</h1>"
+                document.getElementById("status").innerHTML = "All Stories Have Been Voted On"
+            } else {
+                document.getElementById("storyTitle").innerHTML = "Title: " + titleArr[storyNumber]
+                document.getElementById("storyAs").innerHTML = "<b> As A: </b>" + asAArr[storyNumber]
+                document.getElementById("iWant").innerHTML = "I Want : " + iWantArr[storyNumber]
+                document.getElementById("soThat").innerHTML = "So That: " + soThat[storyNumber]
+                statusBox.style.backgroundColor = 'white'
+                statusBox.innerHTML = "       STATUS       " 
+            }
+            initStoryCount();
+            addStoryBox();
+            storyNumber = storyNumber + 1
+            initStoryCount();
+            
+        }
+        //Checks the votes are equal and the vote count is equal to the user count, If they are it increments storyNumber, If not it returns a message
+        async function endVoting(){
+            var statusBox = document.getElementById("status")
+            let response = await fetch(`/vote/doVotesMatch/${storyNumber}/${userCount}`);
+            let newResponse = await fetch(`/vote/findByID/${storyNumber}`);
+            let json = await response.json()
+            let json2 = await newResponse.json()
+            let ourBool = json.match
+            let ourVote = json2[0].vote
+            console.log(ourBool)
+            console.log(ourVote)
+            if(ourBool === true){
+                hideVoting()
+                aggVote = ourVote
+                statusBox.style.backgroundColor = '#90EE90'
+                statusBox.innerHTML = "Success! Everyone unanimously voted  " + ourVote + "... now proceeding to Story " + (storyNumber + 1);
+                setTimeout(() =>{
+                    nextStory()
+                }, 3000);  
+            } else {
+                hideVoting()
+                statusBox.style.backgroundColor = '#FFCCCB'
+                statusBox.innerHTML = "All votes were NOT unanimous, press the 'Start Voting' button to re-vote on Story " + (storyNumber);
+            }
+        }
+        //Updates status and shows voting buttons
+        async function startVoting(){
+            var statusBox = document.getElementById("status")
+            statusBox.style.backgroundColor = 'white'
+            statusBox.innerHTML = "       STATUS       "
+            showVoting();
+        }
+    </script>
+<!--End Of Script/ Title-->
+    <meta charset="UTF-8">
+    <title>Meeting</title>
+</head> 
+<body onload="renderTable(event); initStoryCount();"><h1 style = "width: 40%; margin-left:20px;">Meeting ID: <p style = "float:right;"> {{Invite_Link}}</p></h1></body>
+<section id= "parent" style="border:2px solid #1B1B1B; border-width: auto;" > 
+<!--Display Meeting Participants-->
+    <div id = "userBox"><h3>Meeting Participants:</h3><br><p id ="test">{{table}}</p></div>
+<!--Display Voted on Stories -->
+    <div id = "userBox">
+        <h3>Voted On: </h3>
+        <table id = "list">
+            <tr id="inner">
+                <th style="padding-right: 150px;">Story:</th>
+                <th>Effort:</th>   
+            </tr>
+            <tr id="end">
+            </tr>
+        </table>
+    </div>
+    <!--Displays Current Story Information-->
+    <div id = "storyInfo"><br>
+    <h1 id = "storyNumby">Story</h1><br>
+    <h2 id = "storyTitle">Title: {{currentStory.storyTitle}}</h2>
+    <h3><p id = "storyAs">As a: {{currentStory.asA}}</p> <br>
+        <p id = "iWant">I want: {{currentStory.iWant}}</p> <br>
+        <p id = "soThat">So that: {{currentStory.soThat}}</p>
+    </h3>
+    </div> 
+</section>
+<!--Voting Buttons-->
+<aside id= "votingButtons" class="userBox"  style="float:right; position:sticky;">
+    <h1>Effort:</h1>
+    <button id="effort" onclick="votingZ(1);">1</button>
+    <button id="effort" onclick="votingZ(2);">2</button>
+    <button id="effort" onclick="votingZ(3);">3</button>
+    <button id="effort" onclick="votingZ(5);">5</button>
+    <button id="effort" onclick="votingZ(8);">8</button>
+    <button id="effort" onclick="votingZ(13);">13</button>
+    <button id="effort" onclick="votingZ(21);">21</button>
+    
+</aside>
+<!--Start/End Voting buttons-->
+<section id="bottomSection">
+<div style="margin-left:50px; float:left;">
+    <button onclick= "startVoting();">Start Voting</button><br>
+    <button onclick="endVoting();">End Voting</button>
+</div>
+<!--Status Bar-->
+<h2 id="status" class = "userBox" style="padding-inline: 200px; padding-block: 50px;">       STATUS       </h2>
+</section>
+</html>

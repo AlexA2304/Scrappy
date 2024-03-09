@@ -1,0 +1,35 @@
+#container {
+  display: flex;
+  gap: 1rem;
+}
+
+button,
+input[type="button"],
+input[type="submit"] {
+  align-self: center;
+  background-color: #4169e1;
+  color: white;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+label,
+input {
+  align-self: center;
+}
+
+#success {
+  color: green;
+}
+
+#error {
+  color: red;
+}
+
+.tab {
+  margin-left: 20px;
+}
+
+.jsonExample {
+  line-height: 0;
+}

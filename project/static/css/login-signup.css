@@ -1,0 +1,53 @@
+/*
+Author: Charlie Bailey
+Purpose: Styling the singup and login pages
+*/
+
+/* float signup button to right */
+nav {
+  margin-left: auto;
+}
+
+/* center the input fields using flexbox */
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* override the default styling for the a element */
+a {
+  padding: 0;
+  margin-bottom: 0;
+}
+
+/* apply flexbox to input containers */
+#login-container, #signup-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  color: #CC9200;
+}
+
+/* center the text input within respective containers */
+.text-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+  margin: 5px;
+  font-size: x-large;
+}
+
+/* apply red to error message elements */
+#invalid {
+  color: red;
+}
+
+/* apply green to success message elements */
+#success {
+  color: green;
+}

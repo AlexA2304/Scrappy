@@ -1,0 +1,36 @@
+<!--
+    Author: Charlie Bailey
+    Purpose: inject content for signup page into base template
+-->
+
+{% extends 'base.html' %}
+
+{% block title %}Sign-up{% endblock %}
+{% block script %}
+<script src="static/javascript/signupLogin.js"></script>
+{% endblock %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="static/css/login-signup.css" />
+{% endblock %}
+
+{% block navigation %}
+<a href="{{ url_for('login') }}">
+  <button>Login</button>
+</a>
+{% endblock %}
+
+{% block content %}
+<div id="signup-container">
+  <h3>Select a username and password to create an account.</h3>
+  <div class="text-input">
+    <label><strong>Username:</strong></label>
+    <input id="username" type="text" placeholder="Enter username" required />
+  </div>
+  <div class="text-input">
+    <label><strong>Password:</strong></label>
+    <input id="password" type="password" placeholder="Enter password" required />
+  </div>
+  <button id="signupSubmit">Create Account</button>
+</div>
+{% endblock %}

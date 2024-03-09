@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Scrappy Endpoints</title>
+    <link rel="stylesheet" href="static/css/endpoints.css" />
+    <script src="static/javascript/endpoints.js"></script>
+  </head>
+  <body>
+    <h1>These are the existing endpoints for the Scrappy App</h1>
+    <!-- VOTING -->
+    <h3>Vote Service</h3>
+    <p>Supports voting actions and data retrieval</p>
+    <ul>
+      <!-- findAll -->
+      <li>
+        <div id="container">
+          <p>/vote/findAll: Returns the entire vote table</p>
+          <button id="voteFindAll" class="button">findAll</button>
+        </div>
+        <div id="voteFindAllResult"></div>
+      </li>
+
+      <!-- findByID -->
+      <li>
+        <div id="container">
+          <p>/vote/findByID/{storyID}: Returns the votes by storyID</p>
+          <label
+            >StoryID
+            <input id="storyID" type="text" placeholder="Specify a storyID" />
+          </label>
+          <button id="voteFindByID" class="button">findByID</button>
+        </div>
+        <div id="voteFindByIDResult"></div>
+      </li>
+
+      <!-- doVotesMatch -->
+      <li>
+        <p>
+          /vote/doVotesMatch/{storyID}/{numberOfVoters}: Returns true if all
+          votes in the storyID are equal AND the number of votes equals the
+          provided number of voters
+        </p>
+        <div id="container">
+          <label
+            >StoryID
+            <input
+              id="getVotesStoryID"
+              type="text"
+              placeholder="Specify a storyID"
+            />
+          </label>
+          <label
+            >Number of Voters
+            <input
+              id="getVotesNumberOfVoters"
+              type="text"
+              placeholder="Specify the number of voters"
+            />
+          </label>
+          <button id="voteGetVotes" class="button">doVotesMatch</button>
+        </div>
+        <div id="voteGetVotesResult"></div>
+      </li>
+
+      <!-- findByUsername -->
+      <li>
+        <p>
+          /vote/findByUsername/{username}: Returns the vote table for a single
+          username
+        </p>
+        <div id="container">
+          <label
+            >Username
+            <input
+              id="findByUsernameUsername"
+              type="text"
+              placeholder="Specify a username"
+            />
+          </label>
+          <button id="voteFindByUsername" class="button">findByUsername</button>
+        </div>
+        <div id="voteFindByUsernameResult"></div>
+      </li>
+
+      <!-- findByVote -->
+      <li>
+        <p>
+          /vote/findByVote{vote value}: Returns all votes with the same value
+          provided
+        </p>
+        <div id="container">
+          <label
+            >Vote
+            <input
+              id="findByVoteVote"
+              type="text"
+              placeholder="Specify a vote value"
+            />
+          </label>
+          <button id="voteFindByVote" class="button">findByVote</button>
+        </div>
+        <div id="voteFindByVoteResult"></div>
+      </li>
+
+      <!-- insert -->
+      <li>
+        <p>/vote/insert: Insert a new value into the vote table</p>
+        <p>fetch POST example:</p>
+        <div class="jsonExample">
+          <p>{</p>
+          <p class="tab">storyID: {number}</p>
+          <p class="tab">username: {string}</p>
+          <p class="tab">vote: {1, 2, 3, 5, 8, 13}</p>
+          <p>}</p>
+        </div>
+        <div id="container">
+          <label
+            >StoryID
+            <input
+              id="insertStoryID"
+              type="text"
+              placeholder="Specify a storyID"
+            />
+          </label>
+          <label
+            >Username
+            <input
+              id="insertUsername"
+              type="text"
+              placeholder="Specify a username"
+            />
+          </label>
+          <label
+            >Vote
+            <input id="insertVote" type="text" placeholder="Specify a vote" />
+          </label>
+          <button id="insertVoteButton" class="button">Insert</button>
+        </div>
+        <div id="insertVoteResult"></div>
+      </li>
+
+      <!-- update -->
+      <li>
+        <p>/vote/update: Update an existing vote</p>
+        <p>fetch POST example:</p>
+        <div class="jsonExample">
+          <p>{</p>
+          <p class="tab">storyID: {number}</p>
+          <p class="tab">username: {string}</p>
+          <p class="tab">vote: {1, 2, 3, 5, 8, 13}</p>
+          <p>}</p>
+        </div>
+        <ul>
+          <li>storyID</li>
+          <li>username</li>
+          <li>vote</li>
+        </ul>
+        <div id="container">
+          <label
+            >StoryID
+            <input
+              id="updateStoryID"
+              type="text"
+              placeholder="Specify a storyID"
+            />
+          </label>
+          <label
+            >Username
+            <input
+              id="updateUsername"
+              type="text"
+              placeholder="Specify a username"
+            />
+          </label>
+          <label
+            >Vote
+            <input id="updateVote" type="text" placeholder="Specify a vote" />
+          </label>
+          <button id="updateVoteButton" class="button">Update</button>
+        </div>
+        <div id="updateVoteResult"></div>
+      </li>
+    </ul>
+  </body>
+</html>

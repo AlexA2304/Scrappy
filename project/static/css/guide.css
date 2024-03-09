@@ -1,0 +1,150 @@
+/* Reset some default styles */
+body, h1, h2, h3, p, ul, ol, li, a, button, span, div {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/* Make all fonts on the page 'Raleway' by default,
+Bg-color - White, slight padding. */
+body {
+    font-family: 'Raleway', sans-serif;
+    background-color: #FFFFFF;
+    padding: 20px;
+}
+
+/* Heading 1:
+Size: 36px,
+Font: 'Raleway',
+Bold (600),
+Yellow: #E2A209,
+line spacing: 20px */
+
+h1 {
+    font-size: 36px;
+    font-weight: 600;
+    color: #E2A209;
+    margin-bottom: 20px;
+}
+
+/* Heading 2: Size: 30px,
+Font: 'Raleway',
+Weight: Bold (600),
+Black: #1B1B1B,
+Line Spacing: 15px */
+
+h2 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #1B1B1B;
+    margin-bottom: 15px;
+}
+
+/* Heading 3:
+Size: 24px,
+Font: 'Raleway',
+Weight: Normal (400),
+Black: #1B1B1B,
+Line Spacing: 10px */
+
+h3 {
+    font-size: 24px;
+    font-weight: 400;
+    color: #1B1B1B;
+    margin-bottom: 10px;
+}
+
+/* Paragraph:
+Size: 18px,
+Font: sans-serif,
+Weight: Normal (400),
+Black: #1B1B1B,
+Line Spacing: 10px */
+
+p {
+    font-family: sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #1B1B1B;
+    margin-bottom: 15px;
+}
+
+/* Links:
+Size: 20px (gives emphasis over paragraph text),
+Font: sans-serif,
+Weight: Normal (400),
+Yellow: #CC9200,
+Line Spacing: 10px */
+
+a {
+    font-size: 20px;
+    font-weight: 600;
+    color: #CC9200;
+    text-decoration: none;
+    padding: 20px;
+    width: fit-content;
+    margin-bottom: 15px;
+}
+
+
+/* Links become a slightly lighter shade of
+yellow when hovered over. */
+
+a:hover {
+    color: #FDB912
+}
+
+/* Buttons:
+Background: Yellow - #CC9200,
+Text Color: White - #fff,
+No Border,
+Padding: 10px top & bottom, 20 left & right,
+Size: 20px,
+Margin, 20px,
+
+Button width will change with screen width
+going as low as 80px, and as high as 400px.
+
+
+the hover effects of the button occur
+over a span of 0.1 seconds for both
+mouse on and mouse off. */
+
+button {
+    background-color: #E2A209;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 20px;
+    width: auto;
+    min-width: 80px;
+    max-width: 400px;
+    margin: 20px;
+    transition: 0.1s ease-in-out;
+}
+
+/*On hover, the background becomes black,
+and the text color becomes yellow.*/
+
+button:hover {
+    background-color: #1B1B1B;
+    color: #FDB912;
+}
+
+/* Simply turns <p> text yellow and boldens it */
+span {
+    color: #CC9200;
+    font-weight: 600;
+}
+
+
+
+
+
+
+/* NOT PART OF THE UNIVERSAL STYLES */
+#container {
+    display: flex;
+    flex-direction: column;
+}

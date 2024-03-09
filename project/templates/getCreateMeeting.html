@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Create Meeting Page</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/getCreateMeeting.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Top bar with buttons -->
+    <div class="top-bar">
+        <div class="main-buttons">
+            <a href="{{ url_for('createStory') }}"><button class="button">Add User Stories</button></a>
+            <form method="POST" action="{{ url_for('createMeeting') }}" onsubmit="submitForm(event)">
+                <!-- Existing content -->
+
+                <!-- Hidden input for selected usernames -->
+                <input type="hidden" name="selectedUsernames" id="selectedUsernamesInput">
+
+                <button type="submit" class="create-meeting-btn button">Create Meeting</button>
+            </form>
+            <button class="button" onclick="attendCurrentMeeting()">Attend Meeting</button>
+        </div>
+        <a href="{{ url_for('login') }}"><button class="sign-out button">Sign-out</button></a>
+    </div>
+
+    <!-- Main container -->
+    <div class="container">
+
+        <!-- Attendees list section -->
+        <div class="meeting-section">
+            <h3>Meeting Host: {{ username }}</h3>
+            <ul>
+                <!-- List of attendees -->
+                {% for username in usernames %}
+                <li class="username" onclick="toggleUsernameSelection(this, '{{ username }}')">{{ username }}</li>
+                {% endfor %}
+                <!-- More attendees -->
+            </ul>
+            <button class="button">Add Attendees</button>
+            <p>Meeting id: <span>{{ meetingID }}</span></p>
+        </div>
+
+        <!-- User stories section -->
+        <div class="user-stories">
+            <h3>User stories:</h3>
+            <ul>
+                <!-- Iterate over stories with their effort -->
+                {% for story_name, story_effort in stories %}
+                <li class="story">
+                    {{ story_name }} - Effort: {{ story_effort if story_effort != -1 else "N/A" }}
+                </li>
+                {% endfor %}
+                <!-- More stories -->
+            </ul>
+        </div>
+
+        <!-- Meeting info section -->
+        <div class="meeting-info">
+            <h3>Meeting Info:</h3>
+            <p>Host: <span>{{ username }}</span></p>
+            <p>Meeting id: <span>{{ meetingID }}</span></p>
+            <p>Attendees: <span id="attendeeList">None selected</span></p>
+            <p>Date and time: <span id="currentDateTime">Loading...</span></p>
+            <p>URL: <span>{{ url }}</span></p>
+        </div>
+
+    </div>
+
+    <script>
+        let selectedUsernames = []; // init an array to store selected usernames
+        let selectedStories = []; // init an array to store selected story titles
+
+        // a function to toggle the selection of a username
+        function toggleUsernameSelection(element, username) {
+            if (selectedUsernames.includes(username)) { // checks if the username is already selected
+                // if selected then remove the username from the array and revert its style
+                selectedUsernames = selectedUsernames.filter(u => u !== username);
+                element.style.backgroundColor = "";
+                element.style.color = "";
+            } else {
+                // if not selected then add the username to the array and apply selection styles
+                selectedUsernames.push(username);
+                element.style.backgroundColor = "black";
+                element.style.color = "#CC9200";
+            }
+
+            // updates the display of selected usernames
+            updateAttendeesDisplay();
+        }
+
+        // updates the display to show the currently selected usernames
+        function updateAttendeesDisplay() {
+            let attendeeListElement = document.getElementById('attendeeList');
+            if (selectedUsernames.length > 0) {
+                // if there are selected usernames then join them with a comma and display
+                attendeeListElement.textContent = selectedUsernames.join(', ');
+            } else {
+                // uf no usernames are selected then display 'None selected'
+                attendeeListElement.textContent = 'None selected';
+            }
+        }
+
+        // updates the displayed date and time
+        function updateDateTime() {
+            const now = new Date(); // gets the current date and time
+            const dateTimeString = now.toLocaleString(); // converts to a string
+            document.getElementById('currentDateTime').textContent = dateTimeString; // displays it
+        }
+
+        // selects the container for user stories and attaches a click event listener
+        const storiesContainer = document.querySelector('.user-stories ul');
+        storiesContainer.addEventListener('click', function (event) {
+            // checks if the clicked element is a story
+            if (event.target.classList.contains('story')) {
+                const story = event.target.innerText; // Get the text of the clicked story
+                if (selectedStories.includes(story)) {
+                    // if the story is already selected then remove it from the array and revert styles
+                    selectedStories = selectedStories.filter(s => s !== story);
+                    event.target.style.backgroundColor = "";
+                    event.target.style.color = "";
+                } else {
+                    // if the story is not selected add it to the array and apply selection styles
+                    selectedStories.push(story);
+                    event.target.style.backgroundColor = "black";
+                    event.target.style.color = "#CC9200";
+                }
+
+                // DEBUG: log the current array of selected stories
+                console.log(selectedStories);
+            }
+        });
+
+        // called when the form is submitted to handle the submission
+        function submitForm(event) {
+            // assigns the joined usernames to the value of a hidden input field
+            document.getElementById('selectedUsernamesInput').value = selectedUsernames.join(',');
+        }
+
+        // redirects to the meeting page based on the current meeting ID
+        function attendCurrentMeeting() {
+            var meetingId = "{{ meetingID }}"; // fetches the current meeting ID 
+            window.location.href = "/meeting/" + meetingId; // redirects to the meeting page
+        }
+
+        // call to updateDateTime to set the initial date and time
+        updateDateTime();
+    </script>
+
+
+</body>
+
+</html>
