@@ -1,6 +1,7 @@
 # Project Title: Scrappy Appy
 
 # Product Name: Scrappy
+## Hosted URL: https://scrappy-app-m057.onrender.com/
 
 # Team Members
 Name: Charlie Bailey
@@ -53,8 +54,6 @@ Working on a team to build software can be difficult. With remote team members a
 * Keep complexity to a minimum
 
 # Development Method
-We choose SCRUM!
+- SCRUM
 
 # Project Tracking Software link: https://trello.com/b/EC1vUjuz/colorfornia
-
-# Hosted URL: https://scrappy-app-m057.onrender.com/
